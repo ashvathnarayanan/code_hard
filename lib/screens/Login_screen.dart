@@ -41,14 +41,8 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      // Text(
-                      //   'Login',
-                      //   style: TextStyle(
-                      //       color: Colors.blueAccent,
-                      //       letterSpacing: 1,
-                      //       fontWeight: FontWeight.w700,
-                      //       fontSize: dimensions[0] * 0.085),
-                      // ),
+                      // extract this widget it is used in multiple places the key feature is size 
+                      // in both places so take size as var and store it and give as arguments
                       Container(
                         child: RichText(
                           text: TextSpan(
