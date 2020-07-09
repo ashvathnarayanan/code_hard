@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:move_to_background/move_to_background.dart';
+import 'package:version1/animations/bottomNavigationAnimation.dart';
 
 import '../widgets/app_bar.dart';
 import '../pages/page_1.dart';
@@ -57,28 +58,28 @@ class _HomePageState extends State<HomePage> {
       },
       child: Scaffold(
           body: _pages[_selectedPageIndex]['page'],
-          bottomNavigationBar: BottomNavigationBar(
-            onTap: _selectPage,
-            selectedItemColor: Theme.of(context).accentColor,
-            unselectedItemColor: Colors.grey,
+          bottomNavigationBar: CustomBottomNavigationBar(
             currentIndex: _selectedPageIndex,
-            items: [
-              BottomNavigationBarItem(
-                title: Text(""),
-                icon: Icon(Icons.home),
+            onChange: _selectPage,
+            children: [
+              CustomBottomNavigationItem(
+                icon: Icons.home,
+                label: 'Home',
               ),
-              BottomNavigationBarItem(
-                  title: Text(""), icon: Icon(Icons.people)),
-              BottomNavigationBarItem(
-                  title: Text(""), icon: Icon(Icons.add_circle_outline)),
-              BottomNavigationBarItem(
-                  title: Text(""), icon: Icon(Icons.notifications)),
-              BottomNavigationBarItem(title: Text(""), icon: Icon(Icons.work)),
+              CustomBottomNavigationItem(
+                icon: Icons.people,
+                label: 'People',
+              ),
+              CustomBottomNavigationItem(
+                icon: Icons.add_circle_outline,
+                label: 'Add',
+              ),
+              CustomBottomNavigationItem(icon: Icons.notifications, label: 'Notifications'),
+              CustomBottomNavigationItem(icon: Icons.work, label: 'Work'),
+
             ],
-            elevation: 0,
-            backgroundColor: Colors.white,
-            type: BottomNavigationBarType.fixed,
-          )),
+          )
+      ),
     );
   }
 }
