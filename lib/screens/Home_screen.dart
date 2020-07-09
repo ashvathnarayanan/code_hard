@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:move_to_background/move_to_background.dart';
 
 import '../widgets/app_bar.dart';
 import '../pages/page_1.dart';
@@ -49,29 +50,35 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: _pages[_selectedPageIndex]['page'],
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: _selectPage,
-          selectedItemColor: Theme.of(context).accentColor,
-          unselectedItemColor: Colors.grey,
-          currentIndex: _selectedPageIndex,
-          items: [
-            BottomNavigationBarItem(
-              title: Text(""),
-              icon: Icon(Icons.home),
-            ),
-            BottomNavigationBarItem(title: Text(""), icon: Icon(Icons.people)),
-            BottomNavigationBarItem(
-                title: Text(""), icon: Icon(Icons.add_circle_outline)),
-            BottomNavigationBarItem(
-                title: Text(""), icon: Icon(Icons.notifications)),
-            BottomNavigationBarItem(
-                title: Text(""), icon: Icon(Icons.work)),
-          ],
-          elevation: 0,
-          backgroundColor: Colors.white,
-          type: BottomNavigationBarType.fixed,
-        ));
+    return WillPopScope(
+      onWillPop: () async {
+        MoveToBackground.moveTaskToBack();
+        return false;
+      },
+      child: Scaffold(
+          body: _pages[_selectedPageIndex]['page'],
+          bottomNavigationBar: BottomNavigationBar(
+            onTap: _selectPage,
+            selectedItemColor: Theme.of(context).accentColor,
+            unselectedItemColor: Colors.grey,
+            currentIndex: _selectedPageIndex,
+            items: [
+              BottomNavigationBarItem(
+                title: Text(""),
+                icon: Icon(Icons.home),
+              ),
+              BottomNavigationBarItem(
+                  title: Text(""), icon: Icon(Icons.people)),
+              BottomNavigationBarItem(
+                  title: Text(""), icon: Icon(Icons.add_circle_outline)),
+              BottomNavigationBarItem(
+                  title: Text(""), icon: Icon(Icons.notifications)),
+              BottomNavigationBarItem(title: Text(""), icon: Icon(Icons.work)),
+            ],
+            elevation: 0,
+            backgroundColor: Colors.white,
+            type: BottomNavigationBarType.fixed,
+          )),
+    );
   }
 }

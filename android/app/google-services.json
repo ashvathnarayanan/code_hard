@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1004533746487",
+    "firebase_url": "https://codehard-91b10.firebaseio.com",
+    "project_id": "codehard-91b10",
+    "storage_bucket": "codehard-91b10.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1004533746487:android:d77a2696f3dc74e166e8b2",
+        "android_client_info": {
+          "package_name": "com.example.version1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1004533746487-6rjijq8cib64pssqrui5ig02sqke04fq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBH_6bTQnF6T6sVbhvkrSf26wwP248wXgM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1004533746487-6rjijq8cib64pssqrui5ig02sqke04fq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
