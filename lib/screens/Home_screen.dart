@@ -61,6 +61,7 @@ class _HomePageState extends State<HomePage> {
           bottomNavigationBar: CustomBottomNavigationBar(
             currentIndex: _selectedPageIndex,
             onChange: _selectPage,
+            backgroundColor: Colors.white,
             children: [
               CustomBottomNavigationItem(
                 icon: Icons.home,
