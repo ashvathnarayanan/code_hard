@@ -30,6 +30,7 @@ class _LoginPageState extends State<LoginPage> {
         return false;
       },
       child: Scaffold(
+        backgroundColor: Colors.blue[900],
         body: Container(
           child: ModalProgressHUD(
             inAsyncCall: spinner,
@@ -40,13 +41,57 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      Text(
-                        'Login',
-                        style: TextStyle(
-                            color: Colors.blueAccent,
-                            letterSpacing: 1,
-                            fontWeight: FontWeight.w700,
-                            fontSize: dimensions[0] * 0.085),
+                      // Text(
+                      //   'Login',
+                      //   style: TextStyle(
+                      //       color: Colors.blueAccent,
+                      //       letterSpacing: 1,
+                      //       fontWeight: FontWeight.w700,
+                      //       fontSize: dimensions[0] * 0.085),
+                      // ),
+                      Container(
+                        child: RichText(
+                          text: TextSpan(
+                            style:
+                                Theme.of(context).textTheme.headline6.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                            children: [
+                              TextSpan(
+                                text: "EM",
+                                style: TextStyle(
+                                  color: Colors.blue[300],
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.08,
+                                ),
+                              ),
+                              TextSpan(
+                                text: "PLOYED",
+                                style: TextStyle(
+                                  color: Colors.grey[200],
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.08,
+                                ),
+                              ),
+                              TextSpan(
+                                text: ".",
+                                style: TextStyle(
+                                  color: Colors.blue[300],
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.12,
+                                ),
+                              ),
+                              TextSpan(
+                                text: "IN",
+                                style: TextStyle(
+                                  color: Colors.grey[200],
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.08,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                       SizedBox(
                         height: dimensions[0] / 64,
@@ -57,8 +102,12 @@ class _LoginPageState extends State<LoginPage> {
                           children: <Widget>[
                             TextFormField(
                               keyboardType: TextInputType.text,
-                              decoration:
-                                  InputDecoration(labelText: 'Username'),
+                              decoration: InputDecoration(
+                                  labelText: 'Username',
+                                  labelStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: dimensions[1] * 0.05),
+                                  fillColor: Colors.white),
                               validator: (value) => value.isEmpty
                                   ? 'Username can\'t be empty'
                                   : null,
@@ -81,8 +130,11 @@ class _LoginPageState extends State<LoginPage> {
                               validator: (value) => value.isEmpty
                                   ? 'Password can\'t be empty'
                                   : null,
-                              decoration:
-                                  InputDecoration(labelText: 'Password'),
+                              decoration: InputDecoration(
+                                  labelText: 'Password',
+                                  labelStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: dimensions[1] * 0.05)),
                             ),
                             SizedBox(
                               height: dimensions[0] / 32,
@@ -91,7 +143,10 @@ class _LoginPageState extends State<LoginPage> {
                               width: dimensions[1] * 0.7,
                               child: RaisedButton(
                                 color: Colors.blueAccent,
-                                child: Text('Log In'),
+                                child: Text(
+                                  'Log In',
+                                  style: TextStyle(color: Colors.white),
+                                ),
                                 onPressed: () async {
                                   if (username != null ||
                                       username == '' ||
@@ -180,6 +235,7 @@ class _LoginPageState extends State<LoginPage> {
                                 },
                                 child: Text(
                                   'Sign Up',
+                                  style: TextStyle(color: Colors.white),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
