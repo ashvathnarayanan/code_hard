@@ -11,14 +11,14 @@ class Measures extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
-            border: Border.all(color: Colors.blue.withOpacity(0.42)),
+            border: Border.all(color: Colors.blue[900].withOpacity(0.42)),
           ),
           child: TextField(
             decoration: InputDecoration(
               border: InputBorder.none,
               icon: Icon(Icons.search),
               hintText: "What are you looking for?",
-              hintStyle: TextStyle(color: Colors.blue),
+              hintStyle: TextStyle(color: Colors.blue[900]),
             ),
           ),
         ),
@@ -169,12 +169,11 @@ class Measures extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(
-          height: 10,
-        ),
+        Divider(thickness: 1.5,color: Colors.blue[300],),
         Center(
           child: Text('Internships',
               style: TextStyle(
+                color: Colors.blue[800],
                   fontSize: size.height * 0.035, fontWeight: FontWeight.bold)),
         ),
         SizedBox(
