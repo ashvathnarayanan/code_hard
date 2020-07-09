@@ -7,6 +7,13 @@ class Page1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: homeAppBar(context),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            
+          ],
+        ),
+      ),
     );
   }
 }
