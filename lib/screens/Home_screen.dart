@@ -21,23 +21,15 @@ class _HomePageState extends State<HomePage> {
     _pages = [
       {
         'page': Page1(),
-        'title': 'Categories',
-      },
-      {
-        'page': Page2(),
-        'title': 'Your Favorites',
+        'title': 'HOME',
       },
       {
         'page': Page3(),
-        'title': 'Cart',
+        'title': 'Addpost',
       },
       {
         'page': Page2(),
-        'title': 'bla',
-      },
-      {
-        'page': Page2(),
-        'title': 'Cst',
+        'title': 'intern',
       },
     ];
     super.initState();
@@ -64,19 +56,21 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: Colors.white,
             children: [
               CustomBottomNavigationItem(
+                color: Colors.blue[900],
                 icon: Icons.home,
                 label: 'Home',
               ),
               CustomBottomNavigationItem(
-                icon: Icons.people,
-                label: 'People',
-              ),
-              CustomBottomNavigationItem(
+                color: Colors.blue[900],
                 icon: Icons.add_circle_outline,
                 label: 'Add',
               ),
-              CustomBottomNavigationItem(icon: Icons.notifications, label: 'Notifications'),
-              CustomBottomNavigationItem(icon: Icons.work, label: 'Work'),
+              CustomBottomNavigationItem(
+                color: Colors.blue[900],
+                icon: Icons.people,
+                label: 'Intern',
+              ),
+              
 
             ],
           )
