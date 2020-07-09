@@ -23,6 +23,7 @@ class ProfileScreen extends StatelessWidget {
         ),
         title: Center(
           child: Container(
+            // this widget comes in many places..make it into one main widget and get size as argument
             child: RichText(
               text: TextSpan(
                 style: Theme.of(context).textTheme.headline6.copyWith(
