@@ -52,8 +52,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             validator: (value) {
                               if (value.isEmpty) {
                                 return 'Username can\'t be empty';
+                              } else if (value.length > 13) {
+                                return 'Not more than 12 characters';
+                              } else {
+                                return null;
                               }
-                              return null;
                             },
                             onChanged: (input) {
                               setState(() {
@@ -69,8 +72,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           validator: (value) {
                             if (value.isEmpty) {
                               return 'Email can\'t be empty';
+                            } else if (!RegExp(
+                                    r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(value)) {
+                              return 'Invalid email address';
+                            } else {
+                              return null;
                             }
-                            return null;
                           },
                           onChanged: (value) {
                             setState(() {
@@ -82,20 +90,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           height: dimensions[0] / 64,
                         ),
                         TextFormField(
-                          obscureText: true,
-                          onChanged: (input) {
-                            setState(() {
-                              password = input;
-                            });
-                          },
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Password can\'t be empty';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(labelText: 'Password'),
-                        ),
+                            obscureText: true,
+                            onChanged: (input) {
+                              setState(() {
+                                password = input;
+                              });
+                            },
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Password can\'t be empty';
+                              } else if (value.length < 8) {
+                                return 'Password should contain atleast 8 characters';
+                              } else {
+                                return null;
+                              }
+                            },
+                            decoration: InputDecoration(labelText: 'Password')),
                         SizedBox(
                           height: dimensions[0] / 22,
                         ),
@@ -145,11 +155,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                             (Route<dynamic> route) => false);
                                       }
                                     } catch (e) {
+                                      print(e.message);
+                                      String mes = e.message.contains('network')
+                                          ? 'Please check your internet connection'
+                                          : 'Email  already in use by another account';
                                       showDialog(
                                           context: context,
-                                          builder: (context) => AlertDialog(
-                                              title: Text(
-                                                  'Email  already in use by another account')));
+                                          builder: (context) =>
+                                              AlertDialog(title: Text(mes)));
                                     }
                                   } else {
                                     showDialog(

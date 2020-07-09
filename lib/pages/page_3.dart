@@ -8,6 +8,7 @@ class Page3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
@@ -17,7 +18,7 @@ class Page3 extends StatelessWidget {
               color: Colors.white,
             ),
             onPressed: () {}),
-        title: Text('Share Post'),
+        title: Text('Share Post', style: TextStyle(fontSize: size.width*0.055),),
         actions: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -25,7 +26,7 @@ class Page3 extends StatelessWidget {
               FlatButton(
                 child: Text(
                   'Post',
-                  style: TextStyle(color: Colors.blue[100], fontSize: 18),
+                  style: TextStyle(color: Colors.blue[100], fontSize: size.width*0.04),
                 ),
                 onPressed: () {},
                 color: Colors.blue,
@@ -34,43 +35,55 @@ class Page3 extends StatelessWidget {
           )
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 40, left: 15, right: 10),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'What do you want to talk about?',
-                  border: InputBorder.none,
+      body: SingleChildScrollView(
+              child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: size.width*0.9,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 40, left: 15, right: 10),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    hintText: 'What do you want to talk about?',
+                    border: InputBorder.none,
+                  ),
+                  maxLines: 8,
+                  keyboardType: TextInputType.multiline,
+                  textInputAction: TextInputAction.next,
+                  style: TextStyle(fontSize: size.width*0.055),
                 ),
-                maxLines: 8,
-                keyboardType: TextInputType.multiline,
-                textInputAction: TextInputAction.next,
-                style: TextStyle(fontSize: 22),
               ),
             ),
+            ShareOptions(title: 'Add a photo', icotxt: Icons.photo_library),
+              ShareOptions(title: 'Take a video', icotxt: Icons.camera),
+              ShareOptions(title: 'Add a document', icotxt: Icons.library_books),
+              ShareOptions(title: 'Find an expert', icotxt: Icons.info),
+              ShareOptions(title: 'Create a poll', icotxt: Icons.equalizer),
+            ],
           ),
-          ShareOptions()
-        ],
       ),
     );
   }
 }
 
 class ShareOptions extends StatelessWidget {
+  final String title;
+  final icotxt;
 
   const ShareOptions({
     Key key,
+    this.title,
+    this.icotxt,
     
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return ListTile(
-      leading: IconButton(icon: Icon(Icons.photo_library), onPressed: () {}),
-      title: Text('Add a photo'),
+      leading: IconButton(icon: Icon(icotxt), onPressed: () {},iconSize: size.width*0.07,),
+      title: Text(title, style: TextStyle(fontSize: size.width*0.05,color: Colors.grey[700]),),
     );
   }
 }
