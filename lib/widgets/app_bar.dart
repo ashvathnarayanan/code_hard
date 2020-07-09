@@ -2,17 +2,27 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:version1/screens/Login_screen.dart';
+import '../screens/profile_screen.dart';
 
 AppBar homeAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: Colors.black87,
+    backgroundColor: Colors.blue[900],
     elevation: 0,
     leading: Container(
       margin: const EdgeInsets.symmetric(horizontal: 2),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 2),
-        child: CircleAvatar(
-          child: Text('pic'),
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (ctx) => ProfileScreen()),
+            );
+          },
+          child: CircleAvatar(
+            child: Text('pic'),
+            backgroundColor: Colors.blue,
+          ),
         ),
       ),
     ),
@@ -25,15 +35,27 @@ AppBar homeAppBar(BuildContext context) {
                 ),
             children: [
               TextSpan(
-                text: "LINKED",
+                text: "EM",
                 style: TextStyle(
-                  color: Colors.blue,
+                  color: Colors.blue[300],
                 ),
               ),
               TextSpan(
-                text: "SHALA",
+                text: "PLOYED",
                 style: TextStyle(
-                  color: Colors.grey[400],
+                  color: Colors.grey[200],
+                ),
+              ),
+              TextSpan(
+                text: ".",
+                style: TextStyle(
+                  color: Colors.blue[300],
+                ),
+              ),
+              TextSpan(
+                text: "in",
+                style: TextStyle(
+                  color: Colors.grey[200],
                 ),
               ),
             ],
@@ -56,16 +78,6 @@ AppBar homeAppBar(BuildContext context) {
         color: Colors.blueAccent,
         icon: Icon(Icons.exit_to_app),
       ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.send),
-            onPressed: () {},
-            color: Colors.blue,
-          ),
-        ],
-      )
     ],
   );
 }
