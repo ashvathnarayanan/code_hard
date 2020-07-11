@@ -4,6 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:video_player/video_player.dart';
+
+VideoPlayerController _controller;
+Future<void> _initializeVideoPlayerFuture;
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -37,7 +41,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
       String downloadurl = await completedtask.ref.getDownloadURL();
       return downloadurl;
     } catch (e) {
-      print(e);
+    }
+    return null;
+  }
+
+  Future<String> uploadvideo(File file) async {
+    try {
+      var storageref = storage.ref().child('userpics/${user.uid}video');
+      var uploadtask = storageref.putFile(file);
+      var completedtask = await uploadtask.onComplete;
+      String downloadurl = await completedtask.ref.getDownloadURL();
+      return downloadurl;
+    } catch (e) {
     }
     return null;
   }
@@ -159,162 +174,217 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 'picture': url == null ? x.data['picture'] : url
                               });
                             } catch (e) {
-                              print(e);
                             }
                           },
-                          child: CircleAvatar(
-                            backgroundColor: Colors.grey,
-                            radius: MediaQuery.of(context).size.height / 10,
-                            backgroundImage: x.data['picture'] == null
-                                ? NetworkImage(
-                                    'https://static.thenounproject.com/png/961-200.png')
-                                : NetworkImage(x.data['picture']),
+                          child: Row(
+                            children: <Widget>[
+                              CircleAvatar(
+                                backgroundColor: Colors.grey,
+                                radius: MediaQuery.of(context).size.height / 10,
+                                backgroundImage: x.data['picture'] == null
+                                    ? NetworkImage(
+                                        'https://static.thenounproject.com/png/961-200.png')
+                                    : NetworkImage(x.data['picture']),
+                              ),
+                              x.data['video'] == null
+                                  ? (x.data['usermail'] == user.email
+                                      ? IconButton(
+                                          color: Colors.white,
+                                          icon: Icon(Icons.video_call),
+                                          onPressed: () async {
+                                            File video =
+                                                await ImagePicker.pickVideo(
+                                                    source:
+                                                        ImageSource.gallery);
+                                            try {
+                                              url = await uploadvideo(video);
+                                              await cloud
+                                                  .collection('users')
+                                                  .document(x.documentID)
+                                                  .updateData({
+                                                'usermail': x.data['usermail'],
+                                                'username': x.data['username'],
+                                                'picture': x.data['picture'],
+                                                'video': url == null
+                                                    ? x.data['video']
+                                                    : url,
+                                              });
+                                            } catch (e) {
+                                              print(e);
+                                            }
+                                          },
+                                        )
+                                      : Container())
+                                  : IconButton(
+                                      color: Colors.white,
+                                      icon: Icon(Icons.play_arrow),
+                                      onPressed: () {
+                                        _controller =
+                                            VideoPlayerController.network(
+                                          x.data['video'],
+                                        );
+                                        _initializeVideoPlayerFuture =
+                                            _controller.initialize();
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        Video()));
+                                      },
+                                    )
+                            ],
                           ),
                         ),
                       );
                     },
                   ),
-                  Container(
-                    height: size.height * 0.68,
-                    width: size.width * 1,
-                    child: Card(
-                      color: Colors.grey[50],
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                GestureDetector(
-                                  onTap: () {
-                                    //...
-                                  },
-                                  child: Container(
-                                    height: size.height * 0.075,
-                                    width: size.width * 0.75,
-                                    margin: EdgeInsets.all(20),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 5, vertical: 5),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                      border: Border.all(
-                                          color:
-                                              Colors.blue[900].withOpacity(0.42)),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: size.height * 0.68,
+                      width: size.width * 1,
+                      child: Card(
+                        color: Colors.grey[50],
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  GestureDetector(
+                                    onTap: () {
+                                      //...
+                                    },
+                                    child: Container(
+                                      height: size.height * 0.075,
+                                      width: size.width * 0.75,
+                                      margin: EdgeInsets.all(20),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 5, vertical: 5),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50),
+                                        border: Border.all(
+                                            color: Colors.blue[900]
+                                                .withOpacity(0.42)),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Icon(Icons.person)
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 30),
-                                  child: Text('profession'),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 20),
-                                  child: RaisedButton(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 40, vertical: 20),
-                                    onPressed: () {},
-                                    child: Text(
-                                      'Hire me!',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    elevation: 0,
-                                    color: Colors.blue[900],
-                                    hoverColor: Colors.blue[700],
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30.0),
-                                        side: BorderSide(
-                                            color: Colors.lightBlue)),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Divider(),
-                            SingleChildScrollView(
-                              child: Column(
+                                  Icon(Icons.person)
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Container(
-                                    height: size.height * 0.5,
-                                    width: size.width * 1,
-                                    child: Card(
-                                      color: Colors.blue[900],
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: NetworkImage(
-                                                'https://wallpaperaccess.com/full/672238.jpg'),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                        child: SingleChildScrollView(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Container(
-                                                padding:
-                                                    const EdgeInsets.all(10),
-                                                child: Text(
-                                                  'Profile',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize:
-                                                        size.width * 0.055,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                height: size.height * 0.4,
-                                                width: size.width * 1,
-                                                child: Card(
-                                                  color: Colors.white,
-                                                  child: Column(
-                                                    children: <Widget>[
-                                                      ProfileContents(
-                                                          size: size),
-                                                      ProfileContents(
-                                                          size: size),
-                                                      ProfileContents(
-                                                          size: size),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 30),
+                                    child: Text('profession'),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    child: RaisedButton(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 40, vertical: 20),
+                                      onPressed: () {},
+                                      child: Text(
+                                        'Hire me!',
+                                        style: TextStyle(color: Colors.white),
                                       ),
+                                      elevation: 0,
+                                      color: Colors.blue[900],
+                                      hoverColor: Colors.blue[700],
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0),
+                                          side: BorderSide(
+                                              color: Colors.lightBlue)),
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
-                            Divider(),
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              child: Text(
-                                'Top Skills',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: size.width * 0.055,
-                                  fontWeight: FontWeight.bold,
+                              Divider(),
+                              SingleChildScrollView(
+                                child: Column(
+                                  children: <Widget>[
+                                    Container(
+                                      height: size.height * 0.5,
+                                      width: size.width * 1,
+                                      child: Card(
+                                        color: Colors.blue[900],
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                  'https://wallpaperaccess.com/full/672238.jpg'),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Container(
+                                                  padding:
+                                                      const EdgeInsets.all(10),
+                                                  child: Text(
+                                                    'Profile',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize:
+                                                          size.width * 0.055,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  height: size.height * 0.5,
+                                                  width: size.width * 1,
+                                                  child: Card(
+                                                    color: Colors.white,
+                                                    child: Column(
+                                                      children: <Widget>[
+                                                        ProfileContents(
+                                                            size: size),
+                                                        ProfileContents(
+                                                            size: size),
+                                                        ProfileContents(
+                                                            size: size),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ),
-                            Container(
-                              height: size.height * 0.4,
-                              width: size.width * 1,
-                            ),
-                          ],
+                              Divider(),
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                child: Text(
+                                  'Top Skills',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: size.width * 0.055,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: size.height * 0.4,
+                                width: size.width * 1,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -326,6 +396,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+}
+
+class Video extends StatefulWidget {
+  @override
+  _VideoState createState() => _VideoState();
+}
+
+class _VideoState extends State<Video> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: FutureBuilder(
+        future: _initializeVideoPlayerFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return AspectRatio(
+              aspectRatio: _controller.value.aspectRatio,
+              child: VideoPlayer(_controller),
+            );
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            if (_controller.value.isPlaying) {
+              _controller.pause();
+            } else {
+              _controller.play();
+            }
+          });
+        },
+        child: Icon(
+          _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+
+    super.dispose();
   }
 }
 
