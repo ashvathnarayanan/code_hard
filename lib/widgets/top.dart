@@ -169,7 +169,11 @@ class Measures extends StatelessWidget {
             ],
           ),
         ),
-        Divider(thickness: 1.5,color: Colors.blue[300],),
+        Column(
+          children: <Widget>[
+            Divider(thickness: 1.5,color: Colors.blue[300],),
+          ],
+        ),
         Center(
           child: Text('Internships',
               style: TextStyle(
