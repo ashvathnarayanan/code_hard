@@ -131,11 +131,13 @@ class _MainQuizPageState extends State<MainQuizPage> {
 
             Padding(
               padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-              child: Text(
-                'Question no. ${index + 1} of ${pythonList.length}',
-                style: TextStyle(
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold,
+              child: Flexible(
+                 child: Text(
+                  'Question no. ${index + 1} of ${pythonList.length}',
+                  style: TextStyle(
+                    fontSize: 35,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),

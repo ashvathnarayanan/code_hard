@@ -128,11 +128,13 @@ class _MainQuizPageJavaState extends State<MainQuizPageJava> {
               padding: const EdgeInsets.only(left: 16.0, right: 16.0),
               child: Row(
                 children: <Widget>[
-                  Text(
-                    'Question no. ${index + 1} of ${javaList.length}',
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
+                  Flexible(
+                    child: Text(
+                      'Question no. ${index + 1} of ${javaList.length}',
+                      style: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   )
                 ],

@@ -190,7 +190,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   CircleAvatar(
                                     backgroundColor: Colors.grey,
                                     radius:
-                                        MediaQuery.of(context).size.height / 10,
+                                        MediaQuery.of(context).size.height / 12.5,
                                     backgroundImage: x.data['picture'] == null
                                         ? NetworkImage(
                                             'https://static.thenounproject.com/png/961-200.png')
@@ -245,22 +245,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         Video()));
                                           },
                                         ),
-                                  Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text('Python : ${x.data['python']}',
-                                          style:
-                                              TextStyle(color: Colors.white)),
-                                      Text('C++ : ${x.data['c++']}',
-                                          style:
-                                              TextStyle(color: Colors.white)),
-                                      Text('Java : ${x.data['java']}',
-                                          style:
-                                              TextStyle(color: Colors.white)),
-                                    ],
+                                  Flexible(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text('Python : ${x.data['python']}',
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                        Text('C++ : ${x.data['c++']}',
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                        Text('Java : ${x.data['java']}',
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                      ],
+                                    ),
                                   )
                                 ],
                               ),
