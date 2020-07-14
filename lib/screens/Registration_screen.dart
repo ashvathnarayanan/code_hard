@@ -142,9 +142,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         Firestore.instance
                                             .collection('users')
                                             .add({
+                                          'video': null,
                                           'usermail': email,
                                           'username': username,
                                           'picture': null,
+                                          'python': 'not attempted',
+                                          'c++': 'not attempted',
+                                          'java': 'not attempted,'
                                         });
                                         Navigator.pushAndRemoveUntil(
                                             context,

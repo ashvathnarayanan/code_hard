@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:version1/animations/bottomNavigationAnimation.dart';
-
 import '../widgets/app_bar.dart';
 import '../pages/page_1.dart';
 import '../pages/page_2.dart';
@@ -70,11 +69,8 @@ class _HomePageState extends State<HomePage> {
                 icon: Icons.people,
                 label: 'Intern',
               ),
-              
-
             ],
-          )
-      ),
+          )),
     );
   }
 }

@@ -1,4 +1,9 @@
 import 'dart:io';
+import 'package:version1/quiz/mainQuizPage.dart';
+import 'package:version1/quiz/mainQuizPageCpp.dart';
+import 'package:version1/quiz/mainQuizPageJava.dart';
+import 'package:version1/quiz/resultPage.dart';
+import 'package:version1/screens/Home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -40,8 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       var completedtask = await uploadtask.onComplete;
       String downloadurl = await completedtask.ref.getDownloadURL();
       return downloadurl;
-    } catch (e) {
-    }
+    } catch (e) {}
     return null;
   }
 
@@ -52,8 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       var completedtask = await uploadtask.onComplete;
       String downloadurl = await completedtask.ref.getDownloadURL();
       return downloadurl;
-    } catch (e) {
-    }
+    } catch (e) {}
     return null;
   }
 
@@ -157,87 +160,147 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           x = i;
                         }
                       }
-                      return Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: GestureDetector(
-                          onTap: () async {
-                            File image = await ImagePicker.pickImage(
-                                source: ImageSource.gallery);
-                            try {
-                              url = await upload(image);
-                              await cloud
-                                  .collection('users')
-                                  .document(x.documentID)
-                                  .updateData({
-                                'usermail': x.data['usermail'],
-                                'username': x.data['username'],
-                                'picture': url == null ? x.data['picture'] : url
-                              });
-                            } catch (e) {
-                            }
-                          },
-                          child: Row(
-                            children: <Widget>[
-                              CircleAvatar(
-                                backgroundColor: Colors.grey,
-                                radius: MediaQuery.of(context).size.height / 10,
-                                backgroundImage: x.data['picture'] == null
-                                    ? NetworkImage(
-                                        'https://static.thenounproject.com/png/961-200.png')
-                                    : NetworkImage(x.data['picture']),
-                              ),
-                              x.data['video'] == null
-                                  ? (x.data['usermail'] == user.email
-                                      ? IconButton(
-                                          color: Colors.white,
-                                          icon: Icon(Icons.video_call),
-                                          onPressed: () async {
-                                            File video =
-                                                await ImagePicker.pickVideo(
-                                                    source:
-                                                        ImageSource.gallery);
-                                            try {
-                                              url = await uploadvideo(video);
-                                              await cloud
-                                                  .collection('users')
-                                                  .document(x.documentID)
-                                                  .updateData({
-                                                'usermail': x.data['usermail'],
-                                                'username': x.data['username'],
-                                                'picture': x.data['picture'],
-                                                'video': url == null
-                                                    ? x.data['video']
-                                                    : url,
-                                              });
-                                            } catch (e) {
-                                              print(e);
-                                            }
-                                          },
-                                        )
-                                      : Container())
-                                  : IconButton(
-                                      color: Colors.white,
-                                      icon: Icon(Icons.play_arrow),
-                                      onPressed: () {
-                                        _controller =
-                                            VideoPlayerController.network(
-                                          x.data['video'],
-                                        );
-                                        _initializeVideoPlayerFuture =
-                                            _controller.initialize();
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        Video()));
-                                      },
-                                    )
-                            ],
+                      return Column(
+                        children: <Widget>[
+                          Text(
+                            x.data['username'],
+                            style: TextStyle(color: Colors.white, fontSize: 15),
                           ),
-                        ),
+                          Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: GestureDetector(
+                              onTap: () async {
+                                File image = await ImagePicker.pickImage(
+                                    source: ImageSource.gallery);
+                                try {
+                                  url = await upload(image);
+                                  await cloud
+                                      .collection('users')
+                                      .document(x.documentID)
+                                      .updateData({
+                                    'usermail': x.data['usermail'],
+                                    'username': x.data['username'],
+                                    'picture':
+                                        url == null ? x.data['picture'] : url
+                                  });
+                                } catch (e) {}
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  CircleAvatar(
+                                    backgroundColor: Colors.grey,
+                                    radius:
+                                        MediaQuery.of(context).size.height / 10,
+                                    backgroundImage: x.data['picture'] == null
+                                        ? NetworkImage(
+                                            'https://static.thenounproject.com/png/961-200.png')
+                                        : NetworkImage(x.data['picture']),
+                                  ),
+                                  x.data['video'] == null
+                                      ? (x.data['usermail'] == user.email
+                                          ? IconButton(
+                                              color: Colors.white,
+                                              icon: Icon(Icons.video_call),
+                                              onPressed: () async {
+                                                File video =
+                                                    await ImagePicker.pickVideo(
+                                                        source: ImageSource
+                                                            .gallery);
+                                                try {
+                                                  url =
+                                                      await uploadvideo(video);
+                                                  await cloud
+                                                      .collection('users')
+                                                      .document(x.documentID)
+                                                      .updateData({
+                                                    'usermail':
+                                                        x.data['usermail'],
+                                                    'username':
+                                                        x.data['username'],
+                                                    'picture':
+                                                        x.data['picture'],
+                                                    'video': url == null
+                                                        ? x.data['video']
+                                                        : url,
+                                                  });
+                                                } catch (e) {}
+                                              },
+                                            )
+                                          : Container())
+                                      : IconButton(
+                                          color: Colors.white,
+                                          icon: Icon(Icons.play_arrow),
+                                          onPressed: () {
+                                            _controller =
+                                                VideoPlayerController.network(
+                                              x.data['video'],
+                                            );
+                                            _initializeVideoPlayerFuture =
+                                                _controller.initialize();
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        Video()));
+                                          },
+                                        ),
+                                  Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text('Python : ${x.data['python']}',
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                      Text('C++ : ${x.data['c++']}',
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                      Text('Java : ${x.data['java']}',
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       );
                     },
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      RaisedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        MainQuizPage()));
+                          },
+                          child: Text('Python quiz')),
+                      RaisedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        MainQuizPageJava()));
+                          },
+                          child: Text('Java quiz')),
+                      RaisedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        MainQuizPageCpp()));
+                          },
+                          child: Text('C++ quiz')),
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -441,7 +504,6 @@ class _VideoState extends State<Video> {
   @override
   void dispose() {
     _controller.dispose();
-
     super.dispose();
   }
 }
