@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:version1/quiz/mainQuizPage.dart';
 import './screens/Root.dart';
 
 void main() => runApp(MyApp());
